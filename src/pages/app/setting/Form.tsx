@@ -32,7 +32,7 @@ export const SettingForm = () => {
             </CardHeader>
             <CardContent>
                 <Form {...form} >
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto flex w-full flex-col justify-center sm:max-w-md">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto flex w-full flex-col justify-center space-y-4">
                         <FormField
                             control={form.control}
                             name="application_name"
@@ -40,7 +40,7 @@ export const SettingForm = () => {
                                 <FormItem>
                                     <FormLabel>Application Name</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="application_name" {...field} />
+                                        <Input type="text"  {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -53,7 +53,7 @@ export const SettingForm = () => {
                                 <FormItem>
                                     <FormLabel>Application Description</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="application_description" {...field} />
+                                        <Input type="text"  {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -66,7 +66,7 @@ export const SettingForm = () => {
                                 <FormItem>
                                     <FormLabel>Application Version</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="application_version" {...field} />
+                                        <Input type="text" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -78,8 +78,8 @@ export const SettingForm = () => {
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Start Working Hour</FormLabel>
-                                    <FormControl>
-                                        <Input type="text" placeholder="start_working_hour" {...field} />
+                                    <FormControl className="w-full relative" >
+                                        <Input type="time" {...field} className="w-full" />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -92,7 +92,7 @@ export const SettingForm = () => {
                                 <FormItem>
                                     <FormLabel>Grace Period Minutes</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="grace_period_minutes" {...field} />
+                                        <Input type="number" inputMode="numeric" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

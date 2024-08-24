@@ -20,32 +20,32 @@ import { Outlet } from "react-router-dom"
 const links: SideLink[] = [
     {
         title: 'Dashboard',
-        href: '/',
+        href: '/backoffice',
         icon: <IconDashboard />,
     },
     {
         title: 'Surat Tugas',
-        href: '/users',
+        href: '/backoffice/assignments',
         icon: <IconPaperBag />,
     },
     {
         title: 'Kegiatan',
-        href: '/users',
+        href: '/backoffice/activities',
         icon: <IconAccessPoint />,
     },
     {
         title: 'Berita',
-        href: '/users',
+        href: '/backoffice/announcements',
         icon: <IconNews />,
     },
     {
         title: 'Pengguna',
-        href: '/users',
+        href: '/backoffice/users',
         icon: <IconUser />,
     },
     {
         title: 'Settings',
-        href: '/users',
+        href: '/backoffice/settings',
         icon: <IconSettings />,
     }
 ]

@@ -8,9 +8,18 @@ import { http } from "@/lib/http"
 import { ErrorResponse } from "@/lib/type"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
-import { AxiosError } from "axios"
+import { AxiosError, AxiosResponse } from "axios"
 import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
 import { z } from "zod"
+
+type LoginResponse = {
+    message: string;
+    data: {
+        token: string;
+        expired_in: number;
+    }
+}
 
 export const Login = () => {
 
@@ -20,6 +29,7 @@ export const Login = () => {
     });
 
     const { toast } = useToast()
+    const navigate = useNavigate()
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
@@ -29,15 +39,17 @@ export const Login = () => {
         mutationFn: async (values: z.infer<typeof schema>) => {
             return await http(false).post('/auth/login', values);
         },
-        onSuccess: (data) => {
-            console.log(data)
+        onSuccess: (response: AxiosResponse) => {
+            const data: LoginResponse = response.data;
+            localStorage.setItem('auth_token', data.data.token);
+            navigate('/backoffice');
         },
         onError: (error: AxiosError) => {
             toast({
                 title: 'Error',
                 description: (
                     <>
-                        {(error.response?.data as ErrorResponse)?.message ?? 'Something went wrong'}
+                        {(error.response?.data as ErrorResponse)?.message ?? error}
                     </>
                 ),
                 variant: 'destructive'

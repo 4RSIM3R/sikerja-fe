@@ -14,26 +14,39 @@ import { UserIndex } from "@/pages/app/user/Index";
 import { Login } from "@/pages/auth/Login";
 import { Home } from "@/pages/Home";
 import { createBrowserRouter } from "react-router-dom";
+import { ProtectedRoute, PublicRoute } from "./guard";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />
+    element: (
+      <PublicRoute>
+        <Home />
+      </PublicRoute>
+    )
   },
   {
     path: "/login",
-    element: <Login />
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    )
   },
   {
     path: "/backoffice",
-    element: <AppLayout />,
+    element: (
+      <ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         path: "",
         element: <Backoffice />
       },
       {
-        path: "assignment",
+        path: "assignments",
         children: [
           {
             path: "",
@@ -50,7 +63,7 @@ export const router = createBrowserRouter([
         ]
       },
       {
-        path: "activity",
+        path: "activities",
         children: [
           {
             path: "",
@@ -67,7 +80,7 @@ export const router = createBrowserRouter([
         ]
       },
       {
-        path: "announcement",
+        path: "announcements",
         children: [
           {
             path: "",
@@ -84,7 +97,7 @@ export const router = createBrowserRouter([
         ]
       },
       {
-        path: "user",
+        path: "users",
         children: [
           {
             path: "",
