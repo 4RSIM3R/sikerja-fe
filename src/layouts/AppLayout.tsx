@@ -13,7 +13,7 @@ import {
 import { Toaster } from "@/components/ui/toaster"
 import { SideLink } from "@/data/sidelink"
 import useIsCollapsed from "@/hooks/use-is-collapse"
-import { IconHome } from "@tabler/icons-react"
+import { IconAccessPoint, IconDashboard, IconNews, IconPaperBag, IconSettings, IconUser } from "@tabler/icons-react"
 import { Outlet } from "react-router-dom"
 
 
@@ -21,32 +21,32 @@ const links: SideLink[] = [
     {
         title: 'Dashboard',
         href: '/',
-        icon: <IconHome />,
+        icon: <IconDashboard />,
     },
     {
         title: 'Surat Tugas',
         href: '/users',
-        icon: <IconHome />,
+        icon: <IconPaperBag />,
     },
     {
         title: 'Kegiatan',
         href: '/users',
-        icon: <IconHome />,
+        icon: <IconAccessPoint />,
     },
     {
         title: 'Berita',
         href: '/users',
-        icon: <IconHome />,
+        icon: <IconNews />,
     },
     {
         title: 'Pengguna',
         href: '/users',
-        icon: <IconHome />,
+        icon: <IconUser />,
     },
     {
         title: 'Settings',
         href: '/users',
-        icon: <IconHome />,
+        icon: <IconSettings />,
     }
 ]
 

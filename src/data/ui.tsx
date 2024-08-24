@@ -1,0 +1,1 @@
+export const bg_login = "https://sisemar.sumedangkab.go.id/assets/upload/034f45f91503754d82bc21d83d3c4c1f.jpg"

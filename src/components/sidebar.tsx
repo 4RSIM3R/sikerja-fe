@@ -47,16 +47,14 @@ export default function Sidebar({
 
                         {
                             isCollapsed ?
-                                (<img className='h-6 w-6 object-cover' src='https://www.trafodiag.my.id/assets/img/trafodiag.png' />) :
+                                (<img className='h-6 w-6 object-cover' src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Coat_of_arms_of_Sumedang_Regency.svg/98px-Coat_of_arms_of_Sumedang_Regency.svg.png' />) :
                                 (<div className="flex space-x-2 items-center" >
-                                    <img className='h-6 w-6 object-cover' src='https://www.trafodiag.my.id/assets/img/trafodiag.png' />
-                                    <p className="text-lg font-medium text-blue-600" >Trafodiag</p>
+                                    <img className='h-6 w-6 object-cover' src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Coat_of_arms_of_Sumedang_Regency.svg/98px-Coat_of_arms_of_Sumedang_Regency.svg.png' />
+                                    <p className="text-lg font-medium text-green-600" >SIKERJA</p>
                                 </div>)
                         }
 
                     </div>
-
-                    {/* Toggle Button in mobile */}
                     <Button
                         variant='ghost'
                         size='icon'
@@ -69,8 +67,6 @@ export default function Sidebar({
                         {navOpened ? <IconX /> : <IconMenu2 />}
                     </Button>
                 </LayoutHeader>
-
-                {/* Navigation links */}
                 <Nav
                     id='sidebar-menu'
                     className={`h-full flex-1 overflow-auto ${navOpened ? 'max-h-screen' : 'max-h-0 py-0 md:max-h-screen md:py-2'}`}
@@ -78,8 +74,6 @@ export default function Sidebar({
                     isCollapsed={isCollapsed}
                     links={links}
                 />
-
-                {/* Scrollbar width toggle button */}
                 <Button
                     onClick={() => setIsCollapsed((prev) => !prev)}
                     size='icon'
