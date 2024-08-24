@@ -2,8 +2,13 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Toaster } from "@/components/ui/toaster"
+import { useToast } from "@/components/ui/use-toast"
 import { bg_login } from "@/data/ui"
+import { http } from "@/lib/http"
+import { ErrorResponse } from "@/lib/type"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation } from "@tanstack/react-query"
+import { AxiosError } from "axios"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -14,12 +19,34 @@ export const Login = () => {
         password: z.string().min(8)
     });
 
+    const { toast } = useToast()
+
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
     })
 
+    const mutation = useMutation({
+        mutationFn: async (values: z.infer<typeof schema>) => {
+            return await http(false).post('/auth/login', values);
+        },
+        onSuccess: (data) => {
+            console.log(data)
+        },
+        onError: (error: AxiosError) => {
+            toast({
+                title: 'Error',
+                description: (
+                    <>
+                        {(error.response?.data as ErrorResponse)?.message ?? 'Something went wrong'}
+                    </>
+                ),
+                variant: 'destructive'
+            })
+        }
+    })
+
     const onSubmit = async (values: z.infer<typeof schema>) => {
-        console.log(values)
+        mutation.mutate(values)
     }
 
     return (
@@ -39,7 +66,7 @@ export const Login = () => {
                             <p className='text-lg'>
                                 Insun medal
                             </p>
-                            <footer className='text-sm'>Yoppy Yunhasnawa</footer>
+                            <footer className='text-sm'>DINKES SUMEDANG</footer>
                         </blockquote>
                     </div>
                 </div>
@@ -63,7 +90,7 @@ export const Login = () => {
                                 control={form.control}
                                 name="password"
                                 render={({ field }) => (
-                                    <FormItem>
+                                    <FormItem className="my-4" >
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
                                             <Input type="password" placeholder="password" {...field} />
