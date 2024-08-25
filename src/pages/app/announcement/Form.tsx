@@ -4,7 +4,6 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
-import { file_required, file_size } from "@/lib/form"
 import { http } from "@/lib/http"
 import { ErrorResponse } from "@/lib/type"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -21,7 +20,7 @@ export const AnnouncementForm = () => {
         content: z.string().min(3),
         thumbnail: z.instanceof(FileList)
             .refine(files => files?.length > 0, { message: "Thumbnail is required" })
-            .refine(files => files[0]?.size <= 2 * 1024 * 1024, { message: "File size must be less than 2MB" }),
+            .refine(files => files[0]?.size <= 5 * 1024 * 1024, { message: "File size must be less than 2MB" }),
     })
 
     const navigate = useNavigate()

@@ -14,6 +14,8 @@ export const SettingForm = () => {
         application_version: z.string().min(3),
         start_working_hour: z.string().min(3),
         grace_period_minutes: z.number(),
+        chief_name: z.string().min(3),
+        chief_nip: z.string().min(3),
     })
 
     const form = useForm<z.infer<typeof schema>>({
@@ -93,6 +95,32 @@ export const SettingForm = () => {
                                     <FormLabel>Grace Period Minutes</FormLabel>
                                     <FormControl>
                                         <Input type="number" inputMode="numeric" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="chief_name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Chief Name</FormLabel>
+                                    <FormControl>
+                                        <Input type="text" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="chief_nip"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Chief NIP</FormLabel>
+                                    <FormControl>
+                                        <Input type="text" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
