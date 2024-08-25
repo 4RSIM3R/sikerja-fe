@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { PaginatedTable } from "@/components/ui/paginated-table"
 import { Announcement } from "@/model/announcement.model"
+import { IconDetails, IconTrash } from "@tabler/icons-react"
 import { ColumnDef } from "@tanstack/react-table"
 import { Link } from "react-router-dom"
 
@@ -24,7 +25,18 @@ const columnDefs: ColumnDef<Announcement>[] = [
     {
         accessorKey: 'action',
         header: 'Action',
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+            <>
+                <div className="flex flex-row items-center justify-between">
+                    <Button variant='outline' size='icon'>
+                        <IconDetails />
+                    </Button>
+                    <Button variant='outline' size='icon'>
+                        <IconTrash />
+                    </Button>
+                </div>
+            </>
+        ),
     },
 ];
 

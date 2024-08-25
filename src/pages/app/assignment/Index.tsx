@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { PaginatedTable } from "@/components/ui/paginated-table";
 import { Assignment } from "@/model/assignment.model";
+import { IconDetails, IconTrash } from "@tabler/icons-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router-dom"
 
@@ -22,9 +23,20 @@ const columnDefs: ColumnDef<Assignment>[] = [
         cell: (info) => info.getValue(),
     },
     {
-        accessorKey: 'created_at',
-        header: 'Created At',
-        cell: (info) => info.getValue(),
+        accessorKey: 'action',
+        header: 'Action',
+        cell: (info) => (
+            <>
+                <div className="flex flex-row items-center justify-between">
+                    <Button variant='outline' size='icon'>
+                        <IconDetails />
+                    </Button>
+                    <Button variant='outline' size='icon'>
+                        <IconTrash />
+                    </Button>
+                </div>
+            </>
+        ),
     },
 ];
 
