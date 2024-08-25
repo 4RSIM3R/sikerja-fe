@@ -13,12 +13,17 @@ const columnDefs: ColumnDef<Announcement>[] = [
     },
     {
         accessorKey: 'title',
-        header: 'Email',
+        header: 'Title',
         cell: (info) => info.getValue(),
     },
     {
         accessorKey: 'created_at',
         header: 'Created At',
+        cell: (info) => info.getValue(),
+    },
+    {
+        accessorKey: 'action',
+        header: 'Action',
         cell: (info) => info.getValue(),
     },
 ];

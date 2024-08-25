@@ -19,16 +19,17 @@ export const AnnouncementForm = () => {
     const schema = z.object({
         title: z.string().min(3),
         content: z.string().min(3),
-        thumbnail: z.any()
-            .superRefine(file_required)
-            .superRefine(file_size(2))
-        // .superRefine(file_type('image/*'))
+        thumbnail: z.instanceof(FileList)
+            .refine(files => files?.length > 0, { message: "Thumbnail is required" })
+            .refine(files => files[0]?.size <= 2 * 1024 * 1024, { message: "File size must be less than 2MB" }),
     })
 
     const navigate = useNavigate()
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
+        mode: 'onChange',
+
     });
 
     const mutation = useMutation({
@@ -36,7 +37,7 @@ export const AnnouncementForm = () => {
             const formData = new FormData();
             formData.append('title', values.title);
             formData.append('content', values.content);
-            formData.append('thumbnail', values.thumbnail);
+            formData.append('thumbnail', values.thumbnail[0]);
 
             return await http(true).post('/announcement', formData, {
                 headers: {
@@ -106,7 +107,12 @@ export const AnnouncementForm = () => {
                                 <FormItem>
                                     <FormLabel>Thumbnail</FormLabel>
                                     <FormControl>
-                                        <Input type="file" accept="image/*" {...field} />
+                                        <Input
+                                            type="file"
+                                            id="thumbnail"
+                                            accept="image/*"
+                                            onChange={(e) => field.onChange(e.target.files)} // Handle file input change
+                                        />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

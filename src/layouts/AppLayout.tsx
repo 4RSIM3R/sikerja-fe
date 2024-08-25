@@ -14,7 +14,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { SideLink } from "@/data/sidelink"
 import useIsCollapsed from "@/hooks/use-is-collapse"
 import { IconAccessPoint, IconDashboard, IconNews, IconPaperBag, IconSettings, IconUser } from "@tabler/icons-react"
-import { Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
 
 
 const links: SideLink[] = [
@@ -50,9 +50,18 @@ const links: SideLink[] = [
     }
 ]
 
+
+
 export const AppLayout = () => {
 
     const [isCollapsed, setIsCollapsed] = useIsCollapsed()
+
+    const navigate = useNavigate()
+
+    const logout = () => {
+        localStorage.removeItem('auth_token')
+        navigate('/login')
+    }
 
     return (
         <div className='relative h-full overflow-hidden bg-background'>
@@ -69,22 +78,13 @@ export const AppLayout = () => {
                                 <DropdownMenuTrigger asChild>
                                     <Button variant='default' className='relative h-8 w-8 rounded-full'>
                                         <Avatar>
-                                            <AvatarImage src="https://github.com/shadcn.png" />
+                                            <AvatarImage src="https://i.pinimg.com/736x/ae/51/42/ae51423ccfc3c601dba0ab292e79858e.jpg" />
                                             <AvatarFallback>CN</AvatarFallback>
                                         </Avatar>
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className='w-56' align='end' forceMount>
-                                    <DropdownMenuLabel className='font-normal'>
-                                        <div className='flex flex-col space-y-1'>
-                                            <p className='text-sm font-medium leading-none'>admin</p>
-                                            <p className='text-xs leading-none text-muted-foreground'>
-                                                admin@gmail.com
-                                            </p>
-                                        </div>
-                                    </DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem onClick={logout}>
                                         Log out
                                     </DropdownMenuItem>
                                 </DropdownMenuContent>
