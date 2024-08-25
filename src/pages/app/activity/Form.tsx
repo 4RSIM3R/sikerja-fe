@@ -2,7 +2,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { http } from "@/lib/http"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation } from "@tanstack/react-query"
 import { Form, useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -23,8 +25,14 @@ export const ActivityForm = () => {
         resolver: zodResolver(schema),
     })
 
-    const onSubmit = async (values: z.infer<typeof schema>) => {
+    const mutation = useMutation({
+        mutationFn: async (values: z.infer<typeof schema>) => {
+            return await http(true).post('/assignments', values);
+        },
+    })
 
+    const onSubmit = async (values: z.infer<typeof schema>) => {
+        mutation.mutate(values)
     }
 
     return (
@@ -108,7 +116,7 @@ export const ActivityForm = () => {
                                 <FormItem>
                                     <FormLabel>Output</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="output" {...field} />   
+                                        <Input type="text" placeholder="output" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

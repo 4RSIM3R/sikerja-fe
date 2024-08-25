@@ -2,7 +2,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { file_required, file_size, file_type } from "@/lib/form"
+import { http } from "@/lib/http"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { Form } from "react-router-dom"
 import { z } from "zod"
@@ -12,15 +15,24 @@ export const AnnouncementForm = () => {
     const schema = z.object({
         title: z.string().min(3),
         content: z.string().min(3),
-        thumbnail: z.string().min(3),
+        thumbnail: z.any()
+            .superRefine(file_required)
+            .superRefine(file_size(2))
+            .superRefine(file_type('image/*'))
     })
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
+    });
+
+    const mutation = useMutation({
+        mutationFn: async (values: z.infer<typeof schema>) => {
+            return await http(true).post('/announcements', values);
+        },
     })
 
     const onSubmit = async (values: z.infer<typeof schema>) => {
-
+        mutation.mutate(values)
     }
 
     return (
@@ -65,7 +77,7 @@ export const AnnouncementForm = () => {
                                 <FormItem>
                                     <FormLabel>Thumbnail</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="thumbnail" {...field} />
+                                        <Input type="file" accept="image/*" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
