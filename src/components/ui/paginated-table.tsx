@@ -28,14 +28,12 @@ export const PaginatedTable = <T extends any>({
         return response.data;
     };
 
-    // Use TanStack Query to fetch data
     const { data, isLoading, isError } = useQuery({
-        queryKey: ['items', currentPage], // Define the queryKey explicitly in the options object
+        queryKey: ['items', currentPage],
         queryFn: () => fetchItems(currentPage),
 
     });
 
-    // TanStack Table instance
     const table = useReactTable({
         data: data?.data.items || [],
         columns: columnDefs,

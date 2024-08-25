@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { PaginatedTable } from "@/components/ui/paginated-table"
 import { User } from "@/model/user.model"
-import { IconDetails, IconTrash } from "@tabler/icons-react"
+import { IconDetails, IconEye, IconTrash } from "@tabler/icons-react"
 import { ColumnDef } from "@tanstack/react-table"
 import { Link } from "react-router-dom"
 
@@ -25,19 +25,25 @@ const columnDefs: ColumnDef<User>[] = [
     {
         accessorKey: 'role',
         header: 'Role',
-        cell: (info) => info.getValue(),
+        cell: (info) => (
+            <>
+                {info.row.original.roles[0].name}
+            </>
+        ),
     },
     {
         accessorKey: 'action',
         header: 'Action',
         cell: (info) => (
             <>
-                <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-row items-center space-x-2">
+                    <Link to={`/backoffice/users/${info.row.original.id}`}>
+                        <Button variant='outline' size='icon'>
+                            <IconEye className="h-5 w-5" />
+                        </Button>
+                    </Link>
                     <Button variant='outline' size='icon'>
-                        <IconDetails />
-                    </Button>
-                    <Button variant='outline' size='icon'>
-                        <IconTrash />
+                        <IconTrash className="h-5 w-5" />
                     </Button>
                 </div>
             </>
