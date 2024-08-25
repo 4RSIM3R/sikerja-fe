@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { file_required, file_size, file_type } from "@/lib/form";
+import { file_required, file_size } from "@/lib/form";
 import { http } from "@/lib/http";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod"
 
 export const AssignmentForm = () => {
@@ -17,12 +17,11 @@ export const AssignmentForm = () => {
         thumbnail: z.any()
             .superRefine(file_required)
             .superRefine(file_size(2))
-            .superRefine(file_type('image/*'))
     })
 
     const mutation = useMutation({
         mutationFn: async (values: z.infer<typeof schema>) => {
-            return await http(true).post('/announcements', values);
+            return await http(true).post('/announcement', values);
         },
     })
 

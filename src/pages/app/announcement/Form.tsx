@@ -1,13 +1,17 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
+import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { file_required, file_size, file_type } from "@/lib/form"
+import { Textarea } from "@/components/ui/textarea"
+import { toast } from "@/components/ui/use-toast"
+import { file_required, file_size } from "@/lib/form"
 import { http } from "@/lib/http"
+import { ErrorResponse } from "@/lib/type"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
+import { AxiosError, AxiosResponse } from "axios"
 import { useForm } from "react-hook-form"
-import { Form } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { z } from "zod"
 
 export const AnnouncementForm = () => {
@@ -18,8 +22,10 @@ export const AnnouncementForm = () => {
         thumbnail: z.any()
             .superRefine(file_required)
             .superRefine(file_size(2))
-            .superRefine(file_type('image/*'))
+        // .superRefine(file_type('image/*'))
     })
+
+    const navigate = useNavigate()
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
@@ -27,8 +33,31 @@ export const AnnouncementForm = () => {
 
     const mutation = useMutation({
         mutationFn: async (values: z.infer<typeof schema>) => {
-            return await http(true).post('/announcements', values);
+            const formData = new FormData();
+            formData.append('title', values.title);
+            formData.append('content', values.content);
+            formData.append('thumbnail', values.thumbnail);
+
+            return await http(true).post('/announcement', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
         },
+        onSuccess: (response: AxiosResponse) => {
+            navigate('/backoffice/announcements')
+        },
+        onError: (error: AxiosError) => {
+            toast({
+                title: 'Error',
+                description: (
+                    <>
+                        {(error.response?.data as ErrorResponse)?.message ?? error}
+                    </>
+                ),
+                variant: 'destructive'
+            })
+        }
     })
 
     const onSubmit = async (values: z.infer<typeof schema>) => {
@@ -43,7 +72,7 @@ export const AnnouncementForm = () => {
             </CardHeader>
             <CardContent>
                 <Form {...form} >
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto flex w-full flex-col justify-center sm:max-w-md">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col space-y-4 justify-center">
                         <FormField
                             control={form.control}
                             name="title"
@@ -64,7 +93,7 @@ export const AnnouncementForm = () => {
                                 <FormItem>
                                     <FormLabel>Content</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="content" {...field} />
+                                        <Textarea {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

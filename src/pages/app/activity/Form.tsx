@@ -1,11 +1,15 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
+import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { toast } from "@/components/ui/use-toast"
 import { http } from "@/lib/http"
+import { ErrorResponse } from "@/lib/type"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
-import { Form, useForm } from "react-hook-form"
+import { AxiosError, AxiosResponse } from "axios"
+import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
 import { z } from "zod"
 
 export const ActivityForm = () => {
@@ -17,9 +21,11 @@ export const ActivityForm = () => {
         result_plan: z.string().min(3),
         action_plan: z.string().min(3),
         output: z.string().min(3),
-        budget: z.number(),
-        budget_source: z.string().min(3),
+        budget: z.any().optional(),
+        budget_source: z.string().optional(),
     })
+
+    const navigate = useNavigate()
 
     const form = useForm<z.infer<typeof schema>>({
         resolver: zodResolver(schema),
@@ -27,8 +33,22 @@ export const ActivityForm = () => {
 
     const mutation = useMutation({
         mutationFn: async (values: z.infer<typeof schema>) => {
-            return await http(true).post('/assignments', values);
+            return await http(true).post('/activity', values);
         },
+        onSuccess: (response: AxiosResponse) => {
+            navigate('/backoffice/activity')
+        },
+        onError: (error: AxiosError) => {
+            toast({
+                title: 'Error',
+                description: (
+                    <>
+                        {(error.response?.data as ErrorResponse)?.message ?? error}
+                    </>
+                ),
+                variant: 'destructive'
+            })
+        }
     })
 
     const onSubmit = async (values: z.infer<typeof schema>) => {
@@ -43,7 +63,7 @@ export const ActivityForm = () => {
             </CardHeader>
             <CardContent>
                 <Form {...form} >
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="mx-auto flex w-full flex-col justify-center sm:max-w-md">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 flex w-full flex-col justify-center">
                         <FormField
                             control={form.control}
                             name="report_period_start"
@@ -51,7 +71,7 @@ export const ActivityForm = () => {
                                 <FormItem>
                                     <FormLabel>Report Period Start</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="report_period_start" {...field} />
+                                        <Input type="date"  {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -64,7 +84,7 @@ export const ActivityForm = () => {
                                 <FormItem>
                                     <FormLabel>Report Period End</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="report_period_end" {...field} />
+                                        <Input type="date"  {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -77,7 +97,7 @@ export const ActivityForm = () => {
                                 <FormItem>
                                     <FormLabel>Execution Task</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="execution_task" {...field} />
+                                        <Input type="text"  {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -90,7 +110,7 @@ export const ActivityForm = () => {
                                 <FormItem>
                                     <FormLabel>Result Plan</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="result_plan" {...field} />
+                                        <Input type="text"  {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -103,7 +123,7 @@ export const ActivityForm = () => {
                                 <FormItem>
                                     <FormLabel>Action Plan</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="action_plan" {...field} />
+                                        <Input type="text"  {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -116,7 +136,7 @@ export const ActivityForm = () => {
                                 <FormItem>
                                     <FormLabel>Output</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="output" {...field} />
+                                        <Input type="text"  {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -129,7 +149,7 @@ export const ActivityForm = () => {
                                 <FormItem>
                                     <FormLabel>Budget</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="budget" {...field} />
+                                        <Input type="number" inputMode="numeric" {...field} min={0} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -142,7 +162,7 @@ export const ActivityForm = () => {
                                 <FormItem>
                                     <FormLabel>Budget Source</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="budget_source" {...field} />
+                                        <Input type="text"  {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

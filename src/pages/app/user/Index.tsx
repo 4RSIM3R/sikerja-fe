@@ -16,6 +16,21 @@ const columnDefs: ColumnDef<User>[] = [
         header: 'Email',
         cell: (info) => info.getValue(),
     },
+    {
+        accessorKey: 'name',
+        header: 'Name',
+        cell: (info) => info.getValue(),
+    },
+    {
+        accessorKey: 'role',
+        header: 'Role',
+        cell: (info) => info.getValue(),
+    },
+    {
+        accessorKey: 'action',
+        header: 'Action',
+        cell: (info) => info.getValue(),
+    },
 ];
 
 export const UserIndex = () => {

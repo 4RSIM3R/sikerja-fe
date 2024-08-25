@@ -70,7 +70,7 @@ export const router = createBrowserRouter([
             element: <ActivityIndex />
           },
           {
-            path: "form",
+            path: "create",
             element: <ActivityForm />
           },
           {
@@ -104,7 +104,7 @@ export const router = createBrowserRouter([
             element: <UserIndex />
           },
           {
-            path: "form",
+            path: "create",
             element: <UserForm />
           },
           {
