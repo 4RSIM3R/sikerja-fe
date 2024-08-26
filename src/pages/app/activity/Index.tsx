@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { PaginatedTable } from "@/components/ui/paginated-table"
 import { Activity } from "@/model/activity.model"
-import { IconDetails, IconTrash } from "@tabler/icons-react"
+import { IconDetails, IconEye, IconTrash } from "@tabler/icons-react"
 import { ColumnDef } from "@tanstack/react-table"
 import { Link } from "react-router-dom"
 
@@ -37,14 +37,14 @@ const columnDefs: ColumnDef<Activity>[] = [
         header: 'Action',
         cell: (info) => (
             <>
-                <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-row items-center space-x-2">
                     <Link to={`/backoffice/activities/${info.row.original.id}`}>
                         <Button variant='outline' size='icon'>
-                            <IconDetails />
+                            <IconEye className="h-5 w-5" />
                         </Button>
                     </Link>
                     <Button variant='outline' size='icon'>
-                        <IconTrash />
+                        <IconTrash className="h-5 w-5" />
                     </Button>
                 </div>
             </>
