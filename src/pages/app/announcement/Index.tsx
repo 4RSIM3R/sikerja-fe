@@ -28,9 +28,11 @@ const columnDefs: ColumnDef<Announcement>[] = [
         cell: (info) => (
             <>
                 <div className="flex flex-row items-center justify-between">
-                    <Button variant='outline' size='icon'>
-                        <IconDetails />
-                    </Button>
+                   <Link to={`/backoffice/announcements/${info.row.original.id}`}>
+                        <Button variant='outline' size='icon'>
+                            <IconDetails />
+                        </Button>
+                    </Link>
                     <Button variant='outline' size='icon'>
                         <IconTrash />
                     </Button>

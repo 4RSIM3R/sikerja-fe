@@ -8,7 +8,7 @@ export const UserDetail = () => {
 
     const fetchItems = async (page: number) => {
         const axiosInstance = http(true);
-        const response = await axiosInstance.get(``);
+        const response = await axiosInstance.get(`user/${id}`);
         return response.data;
     };
 
