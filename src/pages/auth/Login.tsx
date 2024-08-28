@@ -39,7 +39,7 @@ export const Login = () => {
     const mutation = useMutation({
         mutationFn: async (values: z.infer<typeof schema>) => {
             // please fix this
-            values.fcm_id = '';
+            values.fcm_id = 'fcm-id';
             return await http(false).post('/auth/login', values);
         },
         onSuccess: (response: AxiosResponse) => {
