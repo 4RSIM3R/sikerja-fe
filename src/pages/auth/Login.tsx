@@ -25,7 +25,8 @@ export const Login = () => {
 
     const schema = z.object({
         email: z.string().email(),
-        password: z.string().min(8)
+        password: z.string().min(8),
+        fcm_id: z.optional(z.string())
     });
 
     const { toast } = useToast()
@@ -37,6 +38,8 @@ export const Login = () => {
 
     const mutation = useMutation({
         mutationFn: async (values: z.infer<typeof schema>) => {
+            // please fix this
+            values.fcm_id = '';
             return await http(false).post('/auth/login', values);
         },
         onSuccess: (response: AxiosResponse) => {
